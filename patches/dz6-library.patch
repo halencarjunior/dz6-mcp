@@ -1,0 +1,135 @@
+diff --git a/src/lib.rs b/src/lib.rs
+new file mode 100644
+--- /dev/null
++++ b/src/lib.rs
+@@ -0,0 +1,58 @@
++//! dz6 core library.
++//!
++//! The terminal user interface lives in the `dz6` binary (`src/main.rs`). This
++//! library target exposes the same modules so that other front-ends — such as
++//! the `dz6-mcp` server — can reuse the editor's file access, search, strings,
++//! header parsing and editing logic without going through the TUI.
++
++pub mod app;
++pub mod commands;
++pub mod config;
++pub mod database;
++pub mod draw;
++pub mod editor;
++pub mod events;
++pub mod global;
++pub mod header;
++pub mod hex;
++pub mod initfile;
++pub mod input_history;
++pub mod reader;
++pub mod ruler;
++pub mod text;
++pub mod themes;
++pub mod util;
++pub mod widgets;
++
++/// Terminal bell.
++///
++/// Written to stderr rather than stdout so that front-ends that use stdout as a
++/// protocol channel (for example, a stdio MCP server) are never corrupted by a
++/// bell triggered from inside library code. On a terminal both streams reach
++/// the same device, so the TUI keeps beeping as before.
++#[macro_export]
++macro_rules! beep {
++    () => {
++        eprint!("\x07")
++    };
++}
++
++use app::App;
++
++/// Page size is dynamically calculated as:
++/// frame height - (command line + status line + header) * bytes per line
++pub fn update_page_size(app: &mut App, height: u16) {
++    // Prevent panic on underflow with small screen sizes
++    // Currently, we can't have them because of widgets such as Calculator,
++    // but we might add support for such small screen sizes in the future
++    let page_size = if height.checked_sub(3).is_some() {
++        (height - 3) as usize * app.config.hex_mode_bytes_per_line
++    } else {
++        app.config.hex_mode_bytes_per_line
++    };
++
++    if page_size != app.reader.page_current_size {
++        app.reader.page_current_size = page_size;
++        app.reader.page_end = app.reader.page_start + page_size.wrapping_sub(1);
++    }
++}
+diff --git a/src/main.rs b/src/main.rs
+index 2916a47..ec6dc05 100644
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -1,28 +1,9 @@
+-mod app;
+-mod commands;
+-mod config;
+-mod database;
+-mod draw;
+-mod editor;
+-mod events;
+-mod global;
+-mod header;
+-mod hex;
+-mod initfile;
+-mod input_history;
+-mod reader;
+-mod ruler;
+-mod text;
+-mod themes;
+-mod util;
+-mod widgets;
+-
+ use std::process;
+ 
+ use clap::Parser;
+ use ratatui::crossterm::event;
+ 
+-use app::App;
++use dz6::{app::App, draw, events, util, update_page_size};
+ 
+ #[derive(Parser, Debug)]
+ #[command(version, about, long_about = None)]
+@@ -56,7 +37,7 @@ fn main() {
+     // Vim uses https://github.com/vim/vim/blob/5a9a0518b153b8571ff4d55c5727b72341080cef/src/term.c#L6098
+     // but we simplify it by using the terminal-light crate
+     if terminal_light::luma().is_ok_and(|luma| luma > 0.6) {
+-        app.config.theme = crate::themes::DEFAULT_LIGHT;
++        app.config.theme = dz6::themes::DEFAULT_LIGHT;
+     }
+ 
+     // read init file ignoring errors
+@@ -79,28 +60,3 @@ fn main() {
+ 
+     ratatui::restore();
+ }
+-
+-/// Page size is dynamically calculated as:
+-/// frame height - (command line + status line + header) * bytes per line
+-pub fn update_page_size(app: &mut App, height: u16) {
+-    // Prevent panic on underflow with small screen sizes
+-    // Currently, we can't have them because of widgets such as Calculator,
+-    // but we might add support for such small screen sizes in the future
+-    let page_size = if height.checked_sub(3).is_some() {
+-        (height - 3) as usize * app.config.hex_mode_bytes_per_line
+-    } else {
+-        app.config.hex_mode_bytes_per_line
+-    };
+-
+-    if page_size != app.reader.page_current_size {
+-        app.reader.page_current_size = page_size;
+-        app.reader.page_end = app.reader.page_start + page_size.wrapping_sub(1);
+-    }
+-}
+-
+-#[macro_export]
+-macro_rules! beep {
+-    () => {
+-        print!("\x07")
+-    };
+-}

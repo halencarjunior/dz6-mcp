@@ -1,0 +1,197 @@
+# ---------------------------------------------------------------------------
+# dz6-mcp — ignore rules
+#
+# Goal: never commit build output, local editor/OS junk, temporary files,
+# secrets, large samples or anything specific to one machine or session.
+# Secret-related rules are kept last so they always win over re-inclusions.
+# ---------------------------------------------------------------------------
+
+# --- Rust / Cargo ----------------------------------------------------------
+# Compiled output. Either pattern catches target/ at the repo root and in
+# nested crates/workspaces.
+/target
+target/
+**/target/
+
+# rustfmt / rustc / build leftovers
+**/*.rs.bk
+*.rlib
+*.rmeta
+*.d
+# MSVC debug info
+*.pdb
+*.exp
+*.lib
+*.obj
+*.ilk
+
+# cargo-mutants
+**/mutants.out*/
+
+# Coverage / profiling output
+*.profraw
+*.profdata
+/coverage/
+/lcov.info
+perf.data*
+**/tarpaulin-report.*
+
+# --- Logs, dumps and scratch files -----------------------------------------
+*.log
+logs/
+*.tmp
+*.temp
+*.bak
+*.orig
+*.rej
+*.swp
+*.swo
+*.swn
+*~
+core
+core.*
+*.core
+hs_err_pid*.log
+*.stackdump
+
+# --- OS files --------------------------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# --- Editors / IDEs --------------------------------------------------------
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json.example
+!.vscode/tasks.json.example
+!.vscode/launch.json.example
+*.code-workspace
+.project
+.classpath
+.settings/
+*.sublime-workspace
+*.sublime-project
+.history/
+.vim/
+*.vim.bak
+
+# --- dz6 artifacts ---------------------------------------------------------
+# Annotation sidecars written next to whatever file dz6 opens.
+*.dz6
+
+# --- Binary samples / firmware --------------------------------------------
+# Opening or copy-testing a target in this repo can otherwise stage a large
+# binary into git. Explicit fixture directories are allowed back in.
+*.exe
+*.dll
+*.sys
+*.so
+*.so.*
+*.dylib
+*.elf
+*.o
+*.a
+*.bin
+*.img
+*.iso
+*.rom
+*.fw
+!tests/fixtures/**
+!test_data/**
+!testdata/**
+!fixtures/**
+
+# --- Local scratch ---------------------------------------------------------
+/tmp/
+/.scratch/
+/playground/
+
+# --- Secrets and credentials (kept last: always win) -----------------------
+# Environment files
+.env
+.env.*
+*.env
+!.env.example
+!.env.sample
+!.env.template
+
+# Keys, certificates and keystores
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.crt
+*.cer
+*.der
+*.gpg
+*.asc
+id_rsa*
+id_ed25519*
+id_ecdsa*
+*.ppk
+
+# Credential / token / password dumps
+*.token
+*.tokens
+*.secret
+*.secrets
+*.password
+*.htpasswd
+.htpasswd
+token.json
+tokens.json
+secrets.json
+passwords.json
+*_token.*
+*-token.*
+*_secrets.*
+*-secrets.*
+*secret*.json
+*secret*.yml
+*secret*.yaml
+*secret*.toml
+*secret*.txt
+*secret*.ini
+*secret*.cfg
+*credential*.json
+*credential*.yml
+*credential*.yaml
+*credential*.toml
+*credential*.txt
+*service-account*.json
+credentials.*
+.aws/
+.ssh/
+*.netrc
+.netrc
+.npmrc
+.yarnrc
+.pypirc
+.git-credentials
+.kube/config
+
+# Harness / MCP configuration that may embed API keys or absolute paths.
+# Commit a sanitized example instead (e.g. `.mcp.json.example`).
+.mcp.json
+.mcp.local.json
+claude_desktop_config.json
+mcp_settings.json
+.kilocode/
+.pi/
+.dsh/
+.codex/
+
+# Local agent instructions and session state
+.agents/

@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: dz6-mcp
+      - uses: actions/checkout@v4
+        with:
+          repository: mentebinaria/dz6
+          ref: 9612897db2b0c5ec75ea92285b183e1062ba9af9
+          path: dz6
+      - name: Prepare dz6 library
+        run: git -C dz6 apply --check ../dz6-mcp/patches/dz6-library.patch && git -C dz6 apply ../dz6-mcp/patches/dz6-library.patch
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - name: Check formatting
+        working-directory: dz6-mcp
+        run: cargo fmt --check
+      - name: Lint
+        working-directory: dz6-mcp
+        run: cargo clippy --locked --all-targets -- -D warnings
+      - name: Test
+        working-directory: dz6-mcp
+        run: cargo test --locked
+      - name: Check dz6 TUI compatibility
+        working-directory: dz6
+        run: cargo check --bin dz6

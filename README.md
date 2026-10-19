@@ -1,7 +1,13 @@
 # dz6-mcp
 
+<p align="center">
+  <img src="DZ6MCP.png" alt="dz6-mcp logo" width="720">
+</p>
+
 [![License: GPL-3.0-or-later](https://img.shields.io/badge/license-GPL--3.0--or--later-blue.svg)](LICENSE)
 [![MCP: stdio](https://img.shields.io/badge/MCP-stdio-6f42c1.svg)](https://modelcontextprotocol.io/)
+
+[English](README.md) | [Português (Brasil)](README.pt-BR.md)
 
 A [Model Context Protocol](https://modelcontextprotocol.io/) server that exposes
 the [dz6](https://dz6.dev.br) terminal hex editor to any MCP-capable harness.

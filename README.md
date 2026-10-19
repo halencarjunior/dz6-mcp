@@ -14,7 +14,7 @@ the [dz6](https://dz6.dev.br) terminal hex editor to any MCP-capable harness.
 
 `dz6-mcp` speaks MCP over **stdio** and reuses dz6 itself as its engine, so it
 has the same mmap-backed file access, the same PE/ELF parser (goblin), the same
-search syntax and the same annotation model — just without a terminal.
+search syntax and the same annotation model, just without a terminal.
 
 - **Inspect**: metadata, bytes, integers, strings, entropy, hex dumps, PE/ELF
   headers, sections, segments, symbols, imports/exports, notes and directories.
@@ -551,7 +551,7 @@ Read-only can be set in two places:
    server default for that document.
 
 If a document is already open with a different requested mode, `open_file`
-reopens it — but only when it has no pending edits. The effective mode can be
+reopens it, but only when it has no pending edits. The effective mode can be
 stricter than requested: if the process cannot open the file for writing (for
 example, a read-only file or a missing permission), the document is read-only
 anyway. `file_info` reports the effective value.
@@ -686,33 +686,33 @@ The cursor set by `goto` is the default start for forward `search` calls.
 
 Details and limits:
 
-- **`read_bytes`** — `length` defaults to 256 and is capped at 1 MiB.
+- **`read_bytes`**, `length` defaults to 256 and is capped at 1 MiB.
   `format` is `both` (default), `hex` or `ascii`. `include_bytes=true` adds a
   JSON array of byte values. The length is clamped to the end of the file;
   `truncated` is true when fewer bytes than requested were available. An
   offset past EOF is an error. Reflects staged edits.
-- **`read_int`** — `size` must be `1`, `2`, `4` or `8`. `endian` accepts
+- **`read_int`**, `size` must be `1`, `2`, `4` or `8`. `endian` accepts
   `little`/`le` (default) or `big`/`be`. `signed` defaults to false. Errors if
   the integer would cross the end of the file. Reflects staged edits.
-- **`read_string`** — `encoding` is `utf8` (default), `latin1`, `utf16le` or
+- **`read_string`**, `encoding` is `utf8` (default), `latin1`, `utf16le` or
   `utf16be`. `max_length` defaults to 256 and is capped at 1 MiB.
   `stop_at_nul` defaults to true. Invalid sequences are replaced, not rejected.
-- **`headers`** — returns dz6's nested header view:
+- **`headers`**, returns dz6's nested header view:
   - PE: `dos_header`, `coff_header`, `optional_header` (including data
     directories), `sections`, `imports` and `exports`.
   - ELF: `class`, `endianness`, `header`, `program_headers`, `sections`,
     `symbols`, `dynamic_symbols` and `relocations`.
   - Other formats: `{format, parsed: false, message}` instead of an error, so
     it is safe to probe unknown files.
-- **`strings`** — scans printable ASCII runs (`is_ascii_graphic()` or space)
+- **`strings`**, scans printable ASCII runs (`is_ascii_graphic()` or space)
   with a minimum length of 4 by default. `regex` is **case-insensitive**.
   `max` defaults to 3000. `offset`/`length` filter by string start offset.
   Scans the on-disk mapping, not staged edits.
-- **`analyze`** — entropy is Shannon entropy in bits per byte (0–8).
+- **`analyze`**, entropy is Shannon entropy in bits per byte (0–8).
   `printable_ratio` is the fraction of printable bytes (0–1). `unique_bytes`
   is the number of distinct byte values (0–256). Defaults to the rest of the
   file, capped at 64 MiB. Reflects staged edits.
-- **`dump`** — writes the effective range (including staged edits) to
+- **`dump`**, writes the effective range (including staged edits) to
   `out_path`. `length` must be greater than zero. The destination is created or
   overwritten with `std::fs::write`; parent directories are not created.
 
@@ -782,12 +782,12 @@ the owning `segment`. The response also includes `segments[]` with
 
 Common parameters:
 
-- `name_regex` — Rust regex matched against the symbol name.
-- `kind` — `all` (default), `function`, `object`, `import`, `export`
+- `name_regex`, Rust regex matched against the symbol name.
+- `kind`, `all` (default), `function`, `object`, `import`, `export`
   (aliases: `func`, `data`, `undefined`, `defined`).
-- `dynamic_only` — ELF: force `.dynsym` even when `.symtab` exists.
-- `global_only` — ELF: drop local symbols.
-- `max` — default 1000, capped at 10000. `truncated` reports whether more
+- `dynamic_only`, ELF: force `.dynsym` even when `.symtab` exists.
+- `global_only`, ELF: drop local symbols.
+- `max`, default 1000, capped at 10000. `truncated` reports whether more
   matches existed.
 
 ELF behaviour: unless `dynamic_only` is set, `.symtab` is used when present
@@ -895,17 +895,17 @@ Only `save` writes them to disk. `truncate` is immediate.
 | `save` | – | `path` | `{bytes_written, database_saved, pending_changes, file_size}`. |
 | `truncate` | – (destructive) | `path`, `offset`, `mode` | New size. Immediate and irreversible. |
 
-- **`write_bytes`** — `data` is hex; spaces, `:`, `-` and `_` are ignored, and
+- **`write_bytes`**, `data` is hex; spaces, `:`, `-` and `_` are ignored, and
   an optional `0x` prefix is accepted. The patch may cross section boundaries
   but not the end of the file.
-- **`fill`** — `kind` is `zero` (0x00) or `nop` (0x90). When both `kind` and
+- **`fill`**, `kind` is `zero` (0x00) or `nop` (0x90). When both `kind` and
   `value` are present, `kind` wins. `length` must be greater than zero.
-- **`undo`** — reverts the most recent staged edits first. It does not revert
+- **`undo`**, reverts the most recent staged edits first. It does not revert
   `truncate` (which has already changed the file).
-- **`save`** — applies staged edits to the file and then writes the `.dz6`
+- **`save`**, applies staged edits to the file and then writes the `.dz6`
   sidecar. Returns the number of staged byte positions that were flushed and
   whether the database was saved. No backup file is created.
-- **`truncate`** — `mode: "after"` keeps bytes through `offset` inclusive;
+- **`truncate`**, `mode: "after"` keeps bytes through `offset` inclusive;
   `mode: "before"` drops everything before `offset` and shifts the tail to 0.
   Requires write access and **no pending edits**. Irreversible.
 
@@ -1234,7 +1234,7 @@ read_at_address    {"path": "/bin/ls", "address": "0x2000", "length": 32}
 `elf_info` gives the interpreter, NEEDED libraries, RPATH/RUNPATH and build-id
 (useful for matching debug symbols); `symbols` with `dynamic_only` reflects
 what the dynamic linker actually sees. Addresses in these examples are
-illustrative — take real ones from `headers`/`sections` or your disassembler.
+illustrative, take real ones from `headers`/`sections` or your disassembler.
 
 ### Signature scanning
 

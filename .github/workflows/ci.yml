@@ -36,3 +36,12 @@ jobs:
       - name: Check dz6 TUI compatibility
         working-directory: dz6
         run: cargo check --bin dz6
+      - name: Build assembly demo fixtures
+        working-directory: dz6-mcp
+        run: python3 examples/assembly/build.py
+      - name: Build MCP server
+        working-directory: dz6-mcp
+        run: cargo build --locked
+      - name: Verify assembly demo through all MCP tools
+        working-directory: dz6-mcp
+        run: python3 examples/assembly/verify.py --server target/debug/dz6-mcp

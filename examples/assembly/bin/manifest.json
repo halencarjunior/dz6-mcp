@@ -1,0 +1,164 @@
+{
+  "elf": {
+    "file": "demo.elf",
+    "size": 10480,
+    "symbols": {
+      "_start": {
+        "va": "0x401000",
+        "offset": 4096,
+        "section": ".text"
+      },
+      "check_gate": {
+        "va": "0x401038",
+        "offset": 4152,
+        "section": ".text"
+      },
+      "patch_pad": {
+        "va": "0x401040",
+        "offset": 4160,
+        "section": ".text"
+      },
+      "demo_magic": {
+        "va": "0x402000",
+        "offset": 8192,
+        "section": ".rodata"
+      },
+      "number_le": {
+        "va": "0x402008",
+        "offset": 8200,
+        "section": ".rodata"
+      },
+      "signed_value": {
+        "va": "0x40200c",
+        "offset": 8204,
+        "section": ".rodata"
+      },
+      "greeting_utf8": {
+        "va": "0x402010",
+        "offset": 8208,
+        "section": ".rodata"
+      },
+      "greeting_latin1": {
+        "va": "0x40202a",
+        "offset": 8234,
+        "section": ".rodata"
+      },
+      "greeting_utf16le": {
+        "va": "0x40202e",
+        "offset": 8238,
+        "section": ".rodata"
+      },
+      "greeting_utf16be": {
+        "va": "0x402036",
+        "offset": 8246,
+        "section": ".rodata"
+      },
+      "signature_lab": {
+        "va": "0x40209f",
+        "offset": 8351,
+        "section": ".rodata"
+      },
+      "entropy_ramp": {
+        "va": "0x4020ab",
+        "offset": 8363,
+        "section": ".rodata"
+      },
+      "zero_pad": {
+        "va": "0x4021ab",
+        "offset": 8619,
+        "section": ".rodata"
+      },
+      "demo_gate": {
+        "va": "0x4032ab",
+        "offset": 8875,
+        "section": ".data"
+      },
+      "scratch_buffer": {
+        "va": "0x4032ac",
+        "offset": null,
+        "section": ".bss"
+      }
+    }
+  },
+  "pe": {
+    "file": "demo.exe",
+    "size": 7013,
+    "symbols": {
+      "_start": {
+        "va": "0x140001000",
+        "offset": 1024,
+        "section": ".text"
+      },
+      "check_gate": {
+        "va": "0x140001006",
+        "offset": 1030,
+        "section": ".text"
+      },
+      "patch_pad": {
+        "va": "0x14000100e",
+        "offset": 1038,
+        "section": ".text"
+      },
+      "demo_gate": {
+        "va": "0x140002000",
+        "offset": 1536,
+        "section": ".data"
+      },
+      "demo_magic": {
+        "va": "0x140004000",
+        "offset": 2560,
+        "section": ".rodata"
+      },
+      "number_le": {
+        "va": "0x140004008",
+        "offset": 2568,
+        "section": ".rodata"
+      },
+      "signed_value": {
+        "va": "0x14000400c",
+        "offset": 2572,
+        "section": ".rodata"
+      },
+      "greeting_utf8": {
+        "va": "0x140004010",
+        "offset": 2576,
+        "section": ".rodata"
+      },
+      "greeting_latin1": {
+        "va": "0x14000402a",
+        "offset": 2602,
+        "section": ".rodata"
+      },
+      "greeting_utf16le": {
+        "va": "0x14000402e",
+        "offset": 2606,
+        "section": ".rodata"
+      },
+      "greeting_utf16be": {
+        "va": "0x140004036",
+        "offset": 2614,
+        "section": ".rodata"
+      },
+      "signature_lab": {
+        "va": "0x14000409f",
+        "offset": 2719,
+        "section": ".rodata"
+      },
+      "entropy_ramp": {
+        "va": "0x1400040ab",
+        "offset": 2731,
+        "section": ".rodata"
+      },
+      "zero_pad": {
+        "va": "0x1400041ab",
+        "offset": 2987,
+        "section": ".rodata"
+      },
+      "scratch_buffer": {
+        "va": "0x140005000",
+        "offset": null,
+        "section": ".bss"
+      }
+    }
+  }
+}

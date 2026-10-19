@@ -195,3 +195,7 @@ mcp_settings.json
 
 # Local agent instructions and session state
 .agents/
+
+# Small assembly teaching fixtures built from examples/assembly/demo.s
+!examples/assembly/bin/demo.elf
+!examples/assembly/bin/demo.exe

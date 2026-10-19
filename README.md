@@ -31,8 +31,13 @@ exception of the explicitly destructive `truncate`).
 
 ---
 
+## Assembly demo
+
+Start with a small x86-64 assembly program, discover its access flag, and patch it through MCP. The [guided lab](docs/assembly-demo.md) includes Linux ELF and PE fixtures, dz6 TUI inspection, and an automated walkthrough covering all 39 tools.
+
 ## Contents
 
+- [Assembly demo](#assembly-demo)
 - [How it works](#how-it-works)
 - [Quick start](#quick-start)
 - [Requirements](#requirements)

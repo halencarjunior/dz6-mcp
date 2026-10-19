@@ -22,8 +22,13 @@ O `dz6-mcp` se comunica por MCP via **stdio** e utiliza o próprio dz6 como meca
 
 Nada é gravado no arquivo analisado até a chamada de `save`, com a única exceção de `truncate`, que é explicitamente destrutivo.
 
+## Demo em assembly
+
+Comece com um pequeno programa em assembly x86-64, descubra sua flag de acesso e altere-a pelo MCP. O [laboratório guiado](docs/assembly-demo.pt-BR.md) inclui arquivos ELF Linux e PE, inspeção na TUI do dz6 e uma verificação automatizada das 39 ferramentas.
+
 ## Sumário
 
+- [Demo em assembly](#demo-em-assembly)
 - [Como funciona](#como-funciona)
 - [Início rápido](#início-rápido)
 - [Requisitos](#requisitos)
